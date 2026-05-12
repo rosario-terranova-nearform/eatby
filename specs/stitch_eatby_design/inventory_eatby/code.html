@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Agenda Mode - EatBy</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#002113",
+                        "on-surface": "#161d19",
+                        "surface": "#f4fbf4",
+                        "on-background": "#161d19",
+                        "on-primary-fixed-variant": "#005236",
+                        "error-container": "#ffdad6",
+                        "primary": "#006c49",
+                        "tertiary-fixed": "#ffddb8",
+                        "primary-container": "#10b981",
+                        "error": "#ba1a1a",
+                        "surface-container": "#e8f0e9",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed-variant": "#930013",
+                        "on-tertiary-fixed": "#2a1700",
+                        "secondary-fixed-dim": "#ffb3ad",
+                        "secondary-fixed": "#ffdad7",
+                        "primary-fixed-dim": "#4edea3",
+                        "inverse-surface": "#2b322d",
+                        "outline": "#6c7a71",
+                        "on-primary": "#ffffff",
+                        "surface-container-low": "#eef6ee",
+                        "surface-container-highest": "#dde4dd",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "surface-bright": "#f4fbf4",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "surface-variant": "#dde4dd",
+                        "inverse-primary": "#4edea3",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-container": "#fffbff",
+                        "on-surface-variant": "#3c4a42",
+                        "on-secondary-fixed": "#410004",
+                        "secondary": "#b61722",
+                        "inverse-on-surface": "#ebf3eb",
+                        "surface-dim": "#d4dcd5",
+                        "tertiary": "#855300",
+                        "outline-variant": "#bbcabf",
+                        "background": "#f4fbf4",
+                        "tertiary-container": "#e29100",
+                        "surface-container-high": "#e3eae3",
+                        "on-tertiary-container": "#523200",
+                        "surface-tint": "#006c49",
+                        "on-primary-container": "#00422b",
+                        "on-tertiary": "#ffffff",
+                        "secondary-container": "#da3437",
+                        "on-error-container": "#93000a",
+                        "primary-fixed": "#6ffbbe",
+                        "on-secondary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "container-margin": "20px",
+                        "md": "24px",
+                        "sm": "16px",
+                        "lg": "32px",
+                        "xl": "48px",
+                        "xs": "8px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "label-caps": ["JetBrains Mono"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "display": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "display": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Hanken Grotesk', sans-serif;
+            background-color: #f4fbf4;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style data-stitch-cursor="">*{cursor:crosshair!important}[contenteditable="true"]:focus,.cursor-text:focus{cursor:text!important}</style><style data-stitch-scroll-lock="">html,body{overflow:hidden!important}</style></head>
+<body class="bg-background text-on-background min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-background border-b border-outline-variant dark:border-outline fixed top-0 w-full z-50 flex justify-between items-center px-container-margin py-sm">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim" data-icon="inventory_2">inventory_2</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">EatBy</h1>
+</div>
+<div class="flex items-center gap-sm">
+<button class="hover:bg-surface-container dark:hover:bg-surface-variant p-xs transition-colors duration-200">
+<span class="material-symbols-outlined text-on-surface-variant dark:text-outline-variant" data-icon="search">search</span>
+</button>
+<button class="hover:bg-surface-container dark:hover:bg-surface-variant p-xs transition-colors duration-200">
+<span class="material-symbols-outlined text-on-surface-variant dark:text-outline-variant" data-icon="settings">settings</span>
+</button>
+</div>
+</header>
+<!-- Main Content: Agenda Mode -->
+<main class="mt-[64px] mb-[80px] flex-grow px-container-margin py-md max-w-[1200px] mx-auto w-full">
+<div class="flex flex-col gap-lg">
+<!-- Section Header -->
+<div class="flex justify-between items-end border-b-2 border-on-surface pb-xs">
+<div>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest"></span>
+<h2 class="font-display text-display text-on-surface">Inventory</h2>
+</div>
+</div>
+<!-- Urgent Section -->
+<section class="flex flex-col gap-base">
+<div class="bg-secondary-container bg-opacity-10 px-sm py-xs border-l-4 border-secondary">
+<span class="font-label-caps text-label-caps text-secondary font-bold">IMMEDIATE ATTENTION REQUIRED</span>
+</div>
+<!-- Item Row: High Urgency -->
+<div class="flex items-center bg-surface-container-lowest border border-outline-variant group hover:bg-surface-container transition-colors duration-150">
+<div class="w-1 bg-secondary self-stretch"></div>
+<div class="flex flex-grow items-center justify-between p-sm">
+<div class="flex flex-col">
+<h3 class="font-headline-md text-headline-md text-on-surface">Greek Yogurt</h3>
+<span class="font-label-caps text-label-caps text-on-surface-variant">DAIRY • 2X 500G</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-label-caps text-label-caps text-secondary font-bold px-sm py-xs bg-secondary-fixed border border-secondary">14 HOURS LEFT</span>
+<span class="font-body-md text-[12px] text-on-surface-variant mt-1">Exp: Today, 11:59 PM</span>
+</div>
+</div>
+</div>
+<!-- Item Row: High Urgency -->
+<div class="flex items-center bg-surface-container-lowest border border-outline-variant group hover:bg-surface-container transition-colors duration-150">
+<div class="w-1 bg-secondary self-stretch"></div>
+<div class="flex flex-grow items-center justify-between p-sm">
+<div class="flex flex-col">
+<h3 class="font-headline-md text-headline-md text-on-surface">Fresh Raspberries</h3>
+<span class="font-label-caps text-label-caps text-on-surface-variant">PRODUCE • 1X PUNNET</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-label-caps text-label-caps text-secondary font-bold px-sm py-xs bg-secondary-fixed border border-secondary">1 DAY LEFT</span>
+<span class="font-body-md text-[12px] text-on-surface-variant mt-1">Exp: Tomorrow</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Warning Section -->
+<section class="flex flex-col gap-base">
+<div class="bg-tertiary-container bg-opacity-10 px-sm py-xs border-l-4 border-tertiary">
+<span class="font-label-caps text-label-caps text-tertiary font-bold">UPCOMING DEADLINES</span>
+</div>
+<!-- Item Row: Medium Urgency -->
+<div class="flex items-center bg-surface-container-lowest border border-outline-variant group hover:bg-surface-container transition-colors duration-150">
+<div class="w-1 bg-tertiary self-stretch"></div>
+<div class="flex flex-grow items-center justify-between p-sm">
+<div class="flex flex-col">
+<h3 class="font-headline-md text-headline-md text-on-surface">Organic Whole Milk</h3>
+<span class="font-label-caps text-label-caps text-on-surface-variant">DAIRY • 2L</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-label-caps text-label-caps text-on-tertiary-container font-bold px-sm py-xs bg-tertiary-fixed border border-tertiary">2 DAYS LEFT</span>
+<span class="font-body-md text-[12px] text-on-surface-variant mt-1">Exp: Thursday</span>
+</div>
+</div>
+</div>
+<!-- Item Row: Medium Urgency -->
+<div class="flex items-center bg-surface-container-lowest border border-outline-variant group hover:bg-surface-container transition-colors duration-150">
+<div class="w-1 bg-tertiary self-stretch"></div>
+<div class="flex flex-grow items-center justify-between p-sm">
+<div class="flex flex-col">
+<h3 class="font-headline-md text-headline-md text-on-surface">Chicken Breast</h3>
+<span class="font-label-caps text-label-caps text-on-surface-variant">MEAT • 500G</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-label-caps text-label-caps text-on-tertiary-container font-bold px-sm py-xs bg-tertiary-fixed border border-tertiary">3 DAYS LEFT</span>
+<span class="font-body-md text-[12px] text-on-surface-variant mt-1">Exp: Friday</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Safe Section -->
+<section class="flex flex-col gap-base">
+<div class="bg-primary-container bg-opacity-10 px-sm py-xs border-l-4 border-primary">
+<span class="font-label-caps text-label-caps text-primary font-bold">STABLE INVENTORY</span>
+</div>
+<!-- Item Row: Low Urgency -->
+<div class="flex items-center bg-surface-container-lowest border border-outline-variant group hover:bg-surface-container transition-colors duration-150">
+<div class="w-1 bg-primary self-stretch"></div>
+<div class="flex flex-grow items-center justify-between p-sm">
+<div class="flex flex-col">
+<h3 class="font-headline-md text-headline-md text-on-surface">Unsalted Butter</h3>
+<span class="font-label-caps text-label-caps text-on-surface-variant">DAIRY • 250G</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-label-caps text-label-caps text-on-primary-container font-bold px-sm py-xs bg-primary-fixed border border-primary">12 DAYS LEFT</span>
+<span class="font-body-md text-[12px] text-on-surface-variant mt-1">Exp: Next Month</span>
+</div>
+</div>
+</div>
+<!-- Item Row: Low Urgency -->
+<div class="flex items-center bg-surface-container-lowest border border-outline-variant group hover:bg-surface-container transition-colors duration-150">
+<div class="w-1 bg-primary self-stretch"></div>
+<div class="flex flex-grow items-center justify-between p-sm">
+<div class="flex flex-col">
+<h3 class="font-headline-md text-headline-md text-on-surface">Shredded Mozzarella</h3>
+<span class="font-label-caps text-label-caps text-on-surface-variant">DAIRY • 1KG</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-label-caps text-label-caps text-on-primary-container font-bold px-sm py-xs bg-primary-fixed border border-primary">24 DAYS LEFT</span>
+<span class="font-body-md text-[12px] text-on-surface-variant mt-1">Exp: Oct 12</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Contextual FAB for adding items -->
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface dark:bg-background border-t border-outline-variant dark:border-outline flex justify-around items-center px-gutter py-xs">
+<button class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed-dim font-bold transition-transform scale-95 active:scale-90 hover:opacity-80 bg-primary-container/20 rounded-xl px-4 py-1">
+<span class="material-symbols-outlined" data-icon="list_alt">list_alt</span>
+<span class="font-label-caps text-label-caps">Inventory</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant transition-transform scale-95 active:scale-90 hover:bg-surface-container/50 rounded-xl px-4 py-1">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+<span class="font-label-caps text-label-caps">Calendar</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant transition-transform scale-95 active:scale-90 hover:bg-surface-container/50 rounded-xl px-4 py-1">
+<span class="material-symbols-outlined" data-icon="barcode_scanner">barcode_scanner</span>
+<span class="font-label-caps text-label-caps">Scan</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant transition-transform scale-95 active:scale-90 hover:bg-surface-container/50 rounded-xl px-4 py-1">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="font-label-caps text-label-caps">Alerts</span>
+</button>
+</nav>
+<!-- Background Decoration (Subtle Grid) -->
+<div class="fixed inset-0 -z-10 opacity-20 pointer-events-none" style="background-image: radial-gradient(#6c7a71 0.5px, transparent 0.5px); background-size: 24px 24px;"></div>
+</body></html>

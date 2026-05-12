@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Settings - EatBy</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "background": "#f4fbf4",
+                        "primary-fixed": "#6ffbbe",
+                        "on-surface": "#161d19",
+                        "outline-variant": "#bbcabf",
+                        "inverse-on-surface": "#ebf3eb",
+                        "surface": "#f4fbf4",
+                        "secondary": "#b61722",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#4edea3",
+                        "on-primary-fixed-variant": "#005236",
+                        "surface-container-highest": "#dde4dd",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "secondary-container": "#da3437",
+                        "tertiary-container": "#e29100",
+                        "surface-bright": "#f4fbf4",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed": "#2a1700",
+                        "primary-container": "#10b981",
+                        "on-secondary-fixed": "#410004",
+                        "on-primary-container": "#00422b",
+                        "inverse-surface": "#2b322d",
+                        "secondary-fixed": "#ffdad7",
+                        "outline": "#6c7a71",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "tertiary-fixed": "#ffddb8",
+                        "tertiary": "#855300",
+                        "surface-container-high": "#e3eae3",
+                        "surface-tint": "#006c49",
+                        "error-container": "#ffdad6",
+                        "on-error": "#ffffff",
+                        "on-background": "#161d19",
+                        "surface-container": "#e8f0e9",
+                        "surface-variant": "#dde4dd",
+                        "on-secondary-fixed-variant": "#930013",
+                        "on-secondary-container": "#fffbff",
+                        "on-secondary": "#ffffff",
+                        "surface-container-low": "#eef6ee",
+                        "primary": "#006c49",
+                        "secondary-fixed-dim": "#ffb3ad",
+                        "surface-dim": "#d4dcd5",
+                        "primary-fixed-dim": "#4edea3",
+                        "on-primary-fixed": "#002113",
+                        "on-tertiary-container": "#523200",
+                        "on-surface-variant": "#3c4a42"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "lg": "32px",
+                        "gutter": "16px",
+                        "sm": "16px",
+                        "md": "24px",
+                        "xl": "48px",
+                        "xs": "8px",
+                        "container-margin": "20px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Hanken Grotesk"],
+                        "label-caps": ["JetBrains Mono"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "display": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "display": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Hanken Grotesk', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="bg-surface border-b border-outline-variant fixed top-0 w-full z-50 flex justify-between items-center px-container-margin py-sm">
+<div class="flex items-center gap-xs">
+<button class="p-xs hover:bg-surface-container transition-colors duration-200 rounded-full">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Settings</h1>
+</div>
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant">inventory_2</span>
+</div>
+</header>
+<!-- Content Canvas -->
+<main class="mt-20 px-container-margin max-w-xl mx-auto space-y-lg">
+<!-- Section: Notifications -->
+<section class="space-y-sm">
+<h2 class="font-label-caps text-label-caps text-outline uppercase px-xs">Notifications</h2>
+<div class="bg-surface-container-lowest border border-outline-variant rounded space-y-0">
+<div class="p-sm border-b border-outline-variant">
+<label class="font-body-md text-body-md text-on-surface block mb-xs">Alert Timing</label>
+<div class="flex gap-xs">
+<select class="w-full p-xs border border-outline bg-surface rounded font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all">
+<option>1 day before expiry</option>
+<option selected="">2 days before expiry</option>
+<option>3 days before expiry</option>
+<option>1 week before expiry</option>
+</select>
+</div>
+</div>
+<div class="flex items-center justify-between p-sm">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface">Push Notifications</span>
+<span class="text-xs text-on-surface-variant">Immediate alerts on your device</span>
+</div>
+<button class="relative inline-flex h-6 w-11 items-center rounded-full bg-primary-container">
+<span class="inline-block h-4 w-4 translate-x-6 transform rounded-full bg-white transition"></span>
+</button>
+</div>
+</div>
+</section>
+<!-- Section: App Information -->
+<section class="space-y-sm">
+<h2 class="font-label-caps text-label-caps text-outline uppercase px-xs">App Information</h2>
+<div class="bg-surface-container-lowest border border-outline-variant rounded overflow-hidden">
+<div class="flex items-center justify-between p-sm border-b border-outline-variant">
+<span class="font-body-md text-body-md text-on-surface">Version</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">2.4.1 (Stable)</span>
+</div>
+<button class="w-full flex items-center justify-between p-sm hover:bg-surface-container-low transition-colors">
+<span class="font-body-md text-body-md text-on-surface">About EatBy</span>
+<span class="material-symbols-outlined text-outline">info</span>
+</button>
+</div>
+</section>
+<!-- Visual Anchor: Logo Illustration -->
+<div class="pt-lg pb-md flex flex-col items-center opacity-40 grayscale">
+<img class="w-24 h-24 object-contain rounded mb-xs" data-alt="A clean and minimalist digital illustration of a stylized kitchen inventory system with organized shelves and glowing icons. The aesthetic is modern and professional, using a restricted palette of soft greens and neutral greys to represent the systematic utility of a food management app. High-key studio lighting creates a sense of calm and organization." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBB3dlccyQXDGpRCMzAKdA6fPSVW7MAg0jnGSJNziUeVUinKQ8dhdkmKI1p0Y8KE6Dziaz1lZlZiHsArhVtEuMNmpp55NI7wWaM4DVPAwbVA9jy-N8tcZ94ZxELNaSby-p5OiZRyYxGFvmQO-T1bHgYd3C4ipQr9eVvoz3TEvY4y6sKpwrDiDnbm_gttlOCoGzu60vLKMxRWt7BxlaGeHLTHZT_pfT8c6fvE_9u70JhAnOqxxvr76Ws-Iu6NMcDGW_6VvGR8ELj21Xc"/>
+<p class="font-label-caps text-label-caps text-outline">Professional Inventory Control</p>
+</div>
+</main>
+<!-- BottomNavBar (Hidden on desktop, shown on mobile) -->
+<!-- Suppression Logic: Setting all to inactive as Settings is a sub-page flow -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-gutter py-xs bg-surface border-t border-outline-variant shadow-none">
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:opacity-80 transition-transform scale-95 active:scale-90">
+<span class="material-symbols-outlined">list_alt</span>
+<span class="font-label-caps text-label-caps">Inventory</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:opacity-80 transition-transform scale-95 active:scale-90">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="font-label-caps text-label-caps">Calendar</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:opacity-80 transition-transform scale-95 active:scale-90">
+<span class="material-symbols-outlined">barcode_scanner</span>
+<span class="font-label-caps text-label-caps">Scan</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:opacity-80 transition-transform scale-95 active:scale-90">
+<span class="material-symbols-outlined">notifications</span>
+<span class="font-label-caps text-label-caps">Alerts</span>
+</button>
+</nav>
+<!-- Desktop Navigation Cluster (Top Bar Extension) -->
+<div class="hidden md:flex fixed right-gutter top-sm z-[60] gap-sm">
+<button class="p-xs text-on-surface-variant hover:bg-surface-container rounded transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined">list_alt</span>
+<span class="font-label-caps text-label-caps">Inventory</span>
+</button>
+<button class="p-xs text-on-surface-variant hover:bg-surface-container rounded transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="font-label-caps text-label-caps">Calendar</span>
+</button>
+</div>
+</body></html>

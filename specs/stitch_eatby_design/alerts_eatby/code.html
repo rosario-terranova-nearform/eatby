@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed": "#410004",
+                        "on-primary-fixed": "#002113",
+                        "on-primary-container": "#00422b",
+                        "inverse-primary": "#4edea3",
+                        "tertiary-fixed": "#ffddb8",
+                        "tertiary-container": "#e29100",
+                        "background": "#f4fbf4",
+                        "surface-variant": "#dde4dd",
+                        "on-tertiary-container": "#523200",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-highest": "#dde4dd",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#d4dcd5",
+                        "surface-container-low": "#eef6ee",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-tint": "#006c49",
+                        "on-secondary-container": "#fffbff",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "on-surface-variant": "#3c4a42",
+                        "secondary-fixed-dim": "#ffb3ad",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "surface": "#f4fbf4",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed": "#2a1700",
+                        "surface-bright": "#f4fbf4",
+                        "outline": "#6c7a71",
+                        "outline-variant": "#bbcabf",
+                        "error-container": "#ffdad6",
+                        "on-background": "#161d19",
+                        "on-secondary-fixed-variant": "#930013",
+                        "primary-fixed": "#6ffbbe",
+                        "on-primary-fixed-variant": "#005236",
+                        "on-primary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-surface": "#161d19",
+                        "tertiary": "#855300",
+                        "secondary-fixed": "#ffdad7",
+                        "primary-fixed-dim": "#4edea3",
+                        "on-secondary": "#ffffff",
+                        "secondary-container": "#da3437",
+                        "inverse-on-surface": "#ebf3eb",
+                        "secondary": "#b61722",
+                        "inverse-surface": "#2b322d",
+                        "surface-container": "#e8f0e9",
+                        "primary-container": "#10b981",
+                        "primary": "#006c49",
+                        "surface-container-high": "#e3eae3"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "sm": "16px",
+                        "xl": "48px",
+                        "xs": "8px",
+                        "gutter": "16px",
+                        "base": "4px",
+                        "md": "24px",
+                        "lg": "32px",
+                        "container-margin": "20px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["JetBrains Mono"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "display": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "display": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background min-h-screen font-body-md selection:bg-primary-container">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline docked full-width top-0 sticky z-50 flex justify-between items-center w-full px-container-margin h-16">
+<h1 class="font-headline-md text-headline-md text-primary dark:text-primary-fixed-dim">EatBy</h1>
+<button class="transition-colors duration-200 active:scale-95 text-on-surface-variant dark:text-outline hover:bg-surface-container dark:hover:bg-surface-container-high p-2 rounded-full">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</header>
+<main class="max-w-[1200px] mx-auto px-container-margin pt-md pb-xl">
+<!-- Immediate Action Section -->
+<section class="mb-lg">
+<div class="flex items-center gap-base mb-md">
+<span class="material-symbols-outlined text-secondary" data-icon="priority_high" style="font-variation-settings: 'FILL' 1;">priority_high</span>
+<h2 class="font-headline-md text-headline-md text-on-background">Immediate Action</h2>
+</div>
+<div class="space-y-sm">
+<!-- Alert Block 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant flex overflow-hidden">
+<div class="w-1 bg-secondary"></div>
+<div class="flex-1 p-sm flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<div class="w-12 h-12 bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="breakfast_dining">breakfast_dining</span>
+</div>
+<div>
+<p class="font-headline-md text-body-lg text-on-background">Greek Yogurt</p>
+<p class="font-body-md text-on-surface-variant">expires in 6 hours</p>
+</div>
+</div>
+<div class="bg-secondary text-on-secondary px-sm py-base rounded-full">
+<span class="font-label-caps text-label-caps uppercase">CRITICAL</span>
+</div>
+</div>
+</div>
+<!-- Alert Block 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant flex overflow-hidden">
+<div class="w-1 bg-secondary"></div>
+<div class="flex-1 p-sm flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<div class="w-12 h-12 bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="flatware">flatware</span>
+</div>
+<div>
+<p class="font-headline-md text-body-lg text-on-background">Fresh Spinach</p>
+<p class="font-body-md text-on-surface-variant">expires in 14 hours</p>
+</div>
+</div>
+<div class="bg-secondary text-on-secondary px-sm py-base rounded-full">
+<span class="font-label-caps text-label-caps uppercase">CRITICAL</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Upcoming Section -->
+<section class="mb-lg">
+<div class="flex items-center gap-base mb-md">
+<span class="material-symbols-outlined text-tertiary" data-icon="warning" style="font-variation-settings: 'FILL' 1;">warning</span>
+<h2 class="font-headline-md text-headline-md text-on-background">Upcoming</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-sm">
+<!-- Upcoming Alert 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant flex overflow-hidden">
+<div class="w-1 bg-tertiary-container"></div>
+<div class="flex-1 p-sm flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="egg">egg</span>
+</div>
+<div>
+<p class="font-body-lg font-bold text-on-background">Organic Eggs (12pk)</p>
+<p class="font-body-md text-on-surface-variant">Expires in 1 day</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Upcoming Alert 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant flex overflow-hidden">
+<div class="w-1 bg-tertiary-container"></div>
+<div class="flex-1 p-sm flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="opacity">opacity</span>
+</div>
+<div>
+<p class="font-body-lg font-bold text-on-background">Whole Milk</p>
+<p class="font-body-md text-on-surface-variant">Expires in 2 days</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Inventory Insights Section -->
+<section class="mb-xl">
+<div class="flex items-center gap-base mb-md">
+<span class="material-symbols-outlined text-primary" data-icon="analytics" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<h2 class="font-headline-md text-headline-md text-on-background">Inventory Insights</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-sm">
+<!-- Insight Card 1 -->
+<div class="bg-surface-container-high p-md border border-outline-variant">
+<span class="material-symbols-outlined text-primary mb-xs" data-icon="info">info</span>
+<p class="font-body-lg text-on-surface font-semibold">Tomorrow's Deadline</p>
+<p class="font-body-md text-on-surface-variant mt-xs">You have 3 items reaching their deadline tomorrow. Plan your meals accordingly.</p>
+</div>
+<!-- Insight Card 2 -->
+<div class="bg-surface-container-high p-md border border-outline-variant">
+<span class="material-symbols-outlined text-primary mb-xs" data-icon="shopping_basket">shopping_basket</span>
+<p class="font-body-lg text-on-surface font-semibold">Bulk Warnings</p>
+<p class="font-body-md text-on-surface-variant mt-xs">The Produce category has high turnover. 5 items added today.</p>
+</div>
+<!-- Insight Card 3 -->
+<div class="bg-surface-container-high p-md border border-outline-variant">
+<span class="material-symbols-outlined text-primary mb-xs" data-icon="eco">eco</span>
+<p class="font-body-lg text-on-surface font-semibold">Waste Saved</p>
+<p class="font-body-md text-on-surface-variant mt-xs">You avoided 4.2kg of waste this week by acting on these alerts.</p>
+</div>
+</div>
+</section>
+<!-- Hero Decorative Asset -->
+<div class="w-full h-48 mt-lg overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover grayscale-[20%]" data-alt="A clean, minimalist kitchen pantry with organized glass containers on white shelves. The lighting is bright and airy, emphasizing a modern light-mode aesthetic. Soft greens and neutral grays dominate the color palette, creating a serene and professional environment that feels systematic and efficient for food management." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzVIDFdJMPGM5kCmvX-qSGxsLeOSWyhcyW0mW-mSegf1oZju7hBgSas7rEyp1Rwjgo17g8JUF-zHxfdqdDRlhGFYX-jhIN926r7ve96ZIaMWwcGGi8-zWGSSJkQ0TgzbRZzeeWvUWuDi7G0o5nO-SILmWX0U3RkEn6FHXP_4nZfFy1t339qPKDwJn_8NvY5L1HIMlrxUm5s1tHyeniVXy9UC19RLqPZPl9I8PfRFWhnX5E2LTfOUHLYvkFDqfGA3AV6mb6iQJtIpp5"/>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface dark:bg-surface-dim border-t border-outline-variant dark:border-outline flex justify-around items-center h-20 px-base">
+<div class="transition-all duration-200 active:scale-90 flex flex-col items-center justify-center text-on-surface-variant dark:text-outline px-4 py-1 hover:bg-surface-container-high dark:hover:bg-surface-container-highest cursor-pointer">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-caps text-label-caps">Inventory</span>
+</div>
+<div class="transition-all duration-200 active:scale-90 flex flex-col items-center justify-center text-on-surface-variant dark:text-outline px-4 py-1 hover:bg-surface-container-high dark:hover:bg-surface-container-highest cursor-pointer">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+<span class="font-label-caps text-label-caps">Calendar</span>
+</div>
+<div class="transition-all duration-200 active:scale-90 flex flex-col items-center justify-center text-on-surface-variant dark:text-outline px-4 py-1 hover:bg-surface-container-high dark:hover:bg-surface-container-highest cursor-pointer">
+<span class="material-symbols-outlined" data-icon="qr_code_scanner">qr_code_scanner</span>
+<span class="font-label-caps text-label-caps">Scan</span>
+</div>
+<div class="transition-all duration-200 active:scale-90 flex flex-col items-center justify-center bg-primary-container text-on-primary-container dark:bg-on-primary-fixed-variant dark:text-primary-fixed rounded-full px-4 py-1 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="notifications" style="font-variation-settings: 'FILL' 1;">notifications</span>
+<span class="font-label-caps text-label-caps">Alerts</span>
+</div>
+</nav>
+</body></html>
