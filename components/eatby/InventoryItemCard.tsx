@@ -8,7 +8,6 @@ export type InventoryUrgency = "critical" | "warning" | "safe";
 
 export type InventoryItemCardProps = {
   title: string;
-  meta: string;
   pillLabel: string;
   expiryCaption: string;
   urgency: InventoryUrgency;
@@ -44,7 +43,6 @@ const pillStyle: Record<
 
 export function InventoryItemCard({
   title,
-  meta,
   pillLabel,
   expiryCaption,
   urgency,
@@ -57,7 +55,6 @@ export function InventoryItemCard({
       <View style={styles.body}>
         <View style={styles.colLeft}>
           <Text style={styles.title}>{title}</Text>
-          <Text style={styles.meta}>{meta}</Text>
         </View>
         <View style={styles.colRight}>
           <Text
@@ -128,15 +125,6 @@ const styles = StyleSheet.create({
     lineHeight: 32,
     fontWeight: "600",
     color: Colors.onSurface,
-  },
-  meta: {
-    fontFamily: FontFamily.monoMedium,
-    fontSize: 12,
-    lineHeight: 16,
-    letterSpacing: 0.6,
-    color: Colors.onSurfaceVariant,
-    textTransform: "uppercase",
-    marginTop: 2,
   },
   pill: {
     fontFamily: FontFamily.monoMedium,

@@ -85,7 +85,7 @@ function generateCalendarGrid(items: Food[], now: Date): DayCell[] {
       today: isToday,
       chips: dayItems.map((item) => ({
         id: item.id,
-        text: `${item.name} (${item.quantity}${item.unit})`,
+        text: item.name,
         tone: getChipTone(item.expiryDate),
       })),
     });

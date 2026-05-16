@@ -2,7 +2,6 @@ import {
   EatByHeader,
   EditFoodModal,
   InventoryItemCard,
-  SectionStripe,
 } from "@/components/eatby";
 import { useInventory } from "@/lib/inventory";
 import type { Food, InventoryItemDisplay } from "@/lib/types";
@@ -78,10 +77,6 @@ export default function Inventory() {
           <>
             {critical.length > 0 && (
               <View style={styles.section}>
-                <SectionStripe
-                  label="IMMEDIATE ATTENTION REQUIRED"
-                  urgency="immediate"
-                />
                 <View style={styles.list}>
                   {critical.map((item) => (
                     <InventoryItemCard
@@ -96,7 +91,6 @@ export default function Inventory() {
 
             {warning.length > 0 && (
               <View style={styles.section}>
-                <SectionStripe label="UPCOMING DEADLINES" urgency="upcoming" />
                 <View style={styles.list}>
                   {warning.map((item) => (
                     <InventoryItemCard

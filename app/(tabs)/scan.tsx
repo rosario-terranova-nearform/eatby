@@ -1,6 +1,5 @@
 import { EatByHeader } from "@/components/eatby";
 import { useInventory } from "@/lib/inventory";
-import type { FoodCategory } from "@/lib/types";
 import { Colors } from "@/theme/colors";
 import { FontFamily } from "@/theme/fonts";
 import { Radii } from "@/theme/radii";
@@ -19,16 +18,11 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const STORAGE_OPTS = ["Fridge", "Pantry", "Freezer"] as const;
-
 export default function Scan() {
   const { addFood } = useInventory();
 
   const [name, setName] = useState("");
   const [nameFocused, setNameFocused] = useState(false);
-  const [qty, setQty] = useState(1);
-  const [storage, setStorage] =
-    useState<(typeof STORAGE_OPTS)[number]>("Fridge");
   const [deadline, setDeadline] = useState(() => {
     const d = new Date();
     d.setDate(d.getDate() + 7);
@@ -43,16 +37,12 @@ export default function Scan() {
 
     addFood({
       name: name.trim(),
-      category: "other" as FoodCategory,
-      quantity: qty.toString(),
-      unit: "pack",
       expiryDate: deadline,
     });
 
     setAdded(true);
     setTimeout(() => {
       setName("");
-      setQty(1);
       const d = new Date();
       d.setDate(d.getDate() + 7);
       d.setHours(23, 59, 59, 999);
@@ -143,55 +133,6 @@ export default function Scan() {
                 <Text style={styles.dateDoneText}>Done</Text>
               </Pressable>
             ) : null}
-          </View>
-
-          <View style={styles.row2}>
-            <View style={[styles.field, { flex: 1 }]}>
-              <Text style={styles.label}>Quantity</Text>
-              <View style={styles.stepper}>
-                <Pressable
-                  accessibilityRole="button"
-                  onPress={() => setQty((q) => Math.max(1, q - 1))}
-                  style={[styles.stepperSide, styles.stepperSideLeft]}
-                >
-                  <Text style={styles.stepperBtnText}>−</Text>
-                </Pressable>
-                <Text style={styles.stepperVal}>{qty} pack</Text>
-                <Pressable
-                  accessibilityRole="button"
-                  onPress={() => setQty((q) => q + 1)}
-                  style={[styles.stepperSide, styles.stepperSideRight]}
-                >
-                  <Text style={styles.stepperBtnText}>+</Text>
-                </Pressable>
-              </View>
-            </View>
-            <View style={[styles.field, { flex: 1 }]}>
-              <Text style={styles.label}>Storage</Text>
-              <View style={styles.storageRow}>
-                {STORAGE_OPTS.map((opt) => {
-                  const on = storage === opt;
-                  return (
-                    <Pressable
-                      key={opt}
-                      accessibilityRole="button"
-                      accessibilityState={{ selected: on }}
-                      onPress={() => setStorage(opt)}
-                      style={[styles.storageChip, on && styles.storageChipOn]}
-                    >
-                      <Text
-                        style={[
-                          styles.storageChipText,
-                          on && styles.storageChipTextOn,
-                        ]}
-                      >
-                        {opt}
-                      </Text>
-                    </Pressable>
-                  );
-                })}
-              </View>
-            </View>
           </View>
 
           <Pressable

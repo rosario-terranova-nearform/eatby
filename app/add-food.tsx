@@ -17,29 +17,12 @@ import { Spacing } from "@/theme/spacing";
 import { Radii } from "@/theme/radii";
 import { FontFamily } from "@/theme/fonts";
 import { useInventory } from "@/lib/inventory";
-import type { FoodCategory } from "@/lib/types";
-
-const CATEGORIES: { value: FoodCategory; label: string }[] = [
-  { value: "produce", label: "Produce" },
-  { value: "dairy", label: "Dairy" },
-  { value: "meat", label: "Meat" },
-  { value: "seafood", label: "Seafood" },
-  { value: "frozen", label: "Frozen" },
-  { value: "pantry", label: "Pantry" },
-  { value: "beverages", label: "Beverages" },
-  { value: "condiments", label: "Condiments" },
-  { value: "snacks", label: "Snacks" },
-  { value: "other", label: "Other" },
-];
 
 export default function AddFoodScreen() {
   const router = useRouter();
   const { addFood } = useInventory();
 
   const [name, setName] = useState("");
-  const [category, setCategory] = useState<FoodCategory>("other");
-  const [quantity, setQuantity] = useState("");
-  const [unit, setUnit] = useState("");
   const [expiryDays, setExpiryDays] = useState("");
 
   const handleSave = () => {
@@ -52,9 +35,6 @@ export default function AddFoodScreen() {
 
     addFood({
       name: name.trim(),
-      category,
-      quantity: quantity.trim() || "1",
-      unit: unit.trim() || "",
       expiryDate,
     });
 
@@ -97,57 +77,6 @@ export default function AddFoodScreen() {
               placeholderTextColor={Colors.onSurfaceVariant}
               autoCapitalize="words"
             />
-          </View>
-
-          <View style={styles.field}>
-            <Text style={styles.label}>Category</Text>
-            <View style={styles.categoryGrid}>
-              {CATEGORIES.map((cat) => (
-                <Pressable
-                  key={cat.value}
-                  onPress={() => setCategory(cat.value)}
-                  style={[
-                    styles.categoryChip,
-                    category === cat.value && styles.categoryChipSelected,
-                  ]}
-                  accessibilityRole="button"
-                  accessibilityState={{ selected: category === cat.value }}
-                >
-                  <Text
-                    style={[
-                      styles.categoryChipText,
-                      category === cat.value && styles.categoryChipTextSelected,
-                    ]}
-                  >
-                    {cat.label}
-                  </Text>
-                </Pressable>
-              ))}
-            </View>
-          </View>
-
-          <View style={styles.row}>
-            <View style={[styles.field, styles.halfWidth]}>
-              <Text style={styles.label}>Quantity</Text>
-              <TextInput
-                style={styles.input}
-                value={quantity}
-                onChangeText={setQuantity}
-                placeholder="e.g., 2"
-                placeholderTextColor={Colors.onSurfaceVariant}
-                keyboardType="numeric"
-              />
-            </View>
-            <View style={[styles.field, styles.halfWidth]}>
-              <Text style={styles.label}>Unit</Text>
-              <TextInput
-                style={styles.input}
-                value={unit}
-                onChangeText={setUnit}
-                placeholder="e.g., packs"
-                placeholderTextColor={Colors.onSurfaceVariant}
-              />
-            </View>
           </View>
 
           <View style={styles.field}>

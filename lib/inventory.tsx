@@ -21,22 +21,6 @@ function generateId(): string {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 }
 
-function getCategoryLabel(category: string): string {
-  const labels: Record<string, string> = {
-    produce: "PRODUCE",
-    dairy: "DAIRY",
-    meat: "MEAT",
-    seafood: "SEAFOOD",
-    frozen: "FROZEN",
-    pantry: "PANTRY",
-    beverages: "BEVERAGES",
-    condiments: "CONDIMENTS",
-    snacks: "SNACKS",
-    other: "OTHER",
-  };
-  return labels[category] || "OTHER";
-}
-
 function getUrgency(expiryDate: Date): InventoryUrgency {
   const now = new Date();
   const diffTime = expiryDate.getTime() - now.getTime();
@@ -136,18 +120,13 @@ export function InventoryProvider({ children }: { children: ReactNode }) {
       .map((item) => ({
         id: item.id,
         title: item.name,
-        meta: `${getCategoryLabel(item.category)} • ${item.quantity}${item.unit}`,
         pillLabel: formatTimeLeft(item.expiryDate),
         expiryCaption: formatExpiryDate(item.expiryDate),
+        expiryDate: item.expiryDate,
         urgency: getUrgency(item.expiryDate),
       }))
       .sort((a, b) => {
-        const urgencyOrder: Record<InventoryUrgency, number> = {
-          critical: 0,
-          warning: 1,
-          safe: 2,
-        };
-        return urgencyOrder[a.urgency] - urgencyOrder[b.urgency];
+        return a.expiryDate.getTime() - b.expiryDate.getTime();
       });
   }
 
