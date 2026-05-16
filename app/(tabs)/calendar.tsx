@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { EatByHeader, EditFoodModal } from "@/components/eatby";
 import { Colors } from "@/theme/colors";
 import { FontFamily } from "@/theme/fonts";
 import { Radii } from "@/theme/radii";
 import { Spacing } from "@/theme/spacing";
-import { useMemo } from "react";
+import { MaterialIcons } from "@expo/vector-icons";
 import {
   Pressable,
   ScrollView,
@@ -129,14 +129,27 @@ function chipColors(tone: ChipTone) {
 export default function Calendar() {
   const { items, getFoodById, updateFood, removeFood } = useInventory();
   const [selectedFoodId, setSelectedFoodId] = useState<string | null>(null);
+  const [currentDate, setCurrentDate] = useState(() => new Date());
   const { width } = useWindowDimensions();
   const gridWidth = width - Spacing.containerMargin * 2;
   const cellW = gridWidth / 7;
 
-  const now = new Date();
+  const goToPrevMonth = () => {
+    setCurrentDate((d) => new Date(d.getFullYear(), d.getMonth() - 1, 1));
+  };
+
+  const goToNextMonth = () => {
+    setCurrentDate((d) => new Date(d.getFullYear(), d.getMonth() + 1, 1));
+  };
+
+  const monthYearLabel = currentDate.toLocaleDateString("en-US", {
+    month: "long",
+    year: "numeric",
+  });
+
   const grid = useMemo(
-    () => generateCalendarGrid(items, now),
-    [items, now]
+    () => generateCalendarGrid(items, currentDate),
+    [items, currentDate]
   );
 
   const rows = useMemo(() => {
@@ -168,6 +181,34 @@ export default function Calendar() {
         contentContainerStyle={styles.scroll}
         showsVerticalScrollIndicator={false}
       >
+        <View style={styles.monthNav}>
+          <Pressable
+            onPress={goToPrevMonth}
+            style={styles.navButton}
+            accessibilityRole="button"
+            accessibilityLabel="Previous month"
+          >
+            <MaterialIcons
+              name="chevron-left"
+              size={28}
+              color={Colors.onSurface}
+            />
+          </Pressable>
+          <Text style={styles.monthLabel}>{monthYearLabel}</Text>
+          <Pressable
+            onPress={goToNextMonth}
+            style={styles.navButton}
+            accessibilityRole="button"
+            accessibilityLabel="Next month"
+          >
+            <MaterialIcons
+              name="chevron-right"
+              size={28}
+              color={Colors.onSurface}
+            />
+          </Pressable>
+        </View>
+
         <View style={[styles.gridWrap, { width: gridWidth }]}>
           <View style={styles.weekRow}>
             {WEEKDAYS.map((d) => (
@@ -258,6 +299,27 @@ const styles = StyleSheet.create({
   scroll: {
     paddingHorizontal: Spacing.containerMargin,
     paddingBottom: 100,
+  },
+  monthNav: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: Spacing.md,
+    paddingVertical: Spacing.xs,
+  },
+  navButton: {
+    width: 44,
+    height: 44,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: Radii.full,
+  },
+  monthLabel: {
+    fontFamily: FontFamily.sansSemiBold,
+    fontSize: 20,
+    lineHeight: 28,
+    fontWeight: "600",
+    color: Colors.onSurface,
   },
   gridWrap: {
     alignSelf: "center",
