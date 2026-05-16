@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { EatByHeader, EditFoodModal } from "@/components/eatby";
 import { Colors } from "@/theme/colors";
 import { FontFamily } from "@/theme/fonts";
@@ -147,18 +147,12 @@ export default function Calendar() {
     year: "numeric",
   });
 
-  const grid = useMemo(
-    () => generateCalendarGrid(items, currentDate),
-    [items, currentDate]
-  );
+  const grid = generateCalendarGrid(items, currentDate);
 
-  const rows = useMemo(() => {
-    const out: DayCell[][] = [];
-    for (let i = 0; i < grid.length; i += 7) {
-      out.push(grid.slice(i, i + 7));
-    }
-    return out;
-  }, [grid]);
+  const rows: DayCell[][] = [];
+  for (let i = 0; i < grid.length; i += 7) {
+    rows.push(grid.slice(i, i + 7));
+  }
 
   const selectedFood = selectedFoodId ? getFoodById(selectedFoodId) ?? null : null;
 

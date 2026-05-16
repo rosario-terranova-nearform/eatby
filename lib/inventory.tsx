@@ -2,8 +2,6 @@ import {
   createContext,
   useContext,
   useState,
-  useCallback,
-  useMemo,
   type ReactNode,
 } from "react";
 import { Food, InventoryItemDisplay, InventoryUrgency } from "./types";
@@ -108,39 +106,32 @@ function formatExpiryDate(expiryDate: Date): string {
 export function InventoryProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<Food[]>([]);
 
-  const addFood = useCallback(
-    (food: Omit<Food, "id" | "addedAt">) => {
-      const newFood: Food = {
-        ...food,
-        id: generateId(),
-        addedAt: new Date(),
-      };
-      setItems((prev) => [...prev, newFood]);
-    },
-    []
-  );
+  function addFood(food: Omit<Food, "id" | "addedAt">) {
+    const newFood: Food = {
+      ...food,
+      id: generateId(),
+      addedAt: new Date(),
+    };
+    setItems((prev) => [...prev, newFood]);
+  }
 
-  const updateFood = useCallback(
-    (id: string, updates: Partial<Omit<Food, "id" | "addedAt">>) => {
-      setItems((prev) =>
-        prev.map((item) =>
-          item.id === id ? { ...item, ...updates } : item
-        )
-      );
-    },
-    []
-  );
+  function updateFood(id: string, updates: Partial<Omit<Food, "id" | "addedAt">>) {
+    setItems((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, ...updates } : item
+      )
+    );
+  }
 
-  const removeFood = useCallback((id: string) => {
+  function removeFood(id: string) {
     setItems((prev) => prev.filter((item) => item.id !== id));
-  }, []);
+  }
 
-  const getFoodById = useCallback(
-    (id: string) => items.find((item) => item.id === id),
-    [items]
-  );
+  function getFoodById(id: string): Food | undefined {
+    return items.find((item) => item.id === id);
+  }
 
-  const getDisplayItems = useCallback((): InventoryItemDisplay[] => {
+  function getDisplayItems(): InventoryItemDisplay[] {
     return items
       .map((item) => ({
         id: item.id,
@@ -158,19 +149,16 @@ export function InventoryProvider({ children }: { children: ReactNode }) {
         };
         return urgencyOrder[a.urgency] - urgencyOrder[b.urgency];
       });
-  }, [items]);
+  }
 
-  const value = useMemo(
-    () => ({
-      items,
-      addFood,
-      updateFood,
-      removeFood,
-      getDisplayItems,
-      getFoodById,
-    }),
-    [items, addFood, updateFood, removeFood, getDisplayItems, getFoodById]
-  );
+  const value = {
+    items,
+    addFood,
+    updateFood,
+    removeFood,
+    getDisplayItems,
+    getFoodById,
+  };
 
   return (
     <InventoryContext.Provider value={value}>
