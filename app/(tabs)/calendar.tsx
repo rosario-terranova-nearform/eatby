@@ -12,6 +12,8 @@ import {
   useWindowDimensions,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useInventory } from "@/lib/inventory";
+import type { Food } from "@/lib/types";
 
 const WEEKDAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"] as const;
 
@@ -24,45 +26,73 @@ type DayCell = {
   chips: { text: string; tone: ChipTone }[];
 };
 
-/** Layout aligned with food_calendar_eatby mock (month bridge) */
-const GRID: DayCell[] = [
-  { day: "27", muted: true, chips: [] },
-  { day: "28", muted: true, chips: [] },
-  { day: "29", muted: true, chips: [] },
-  { day: "30", muted: true, chips: [] },
-  { day: "31", muted: true, chips: [] },
-  { day: "1", chips: [{ text: "Milk (2L)", tone: "safe" }] },
-  { day: "2", chips: [] },
-  { day: "3", chips: [] },
-  { day: "4", chips: [] },
-  { day: "5", chips: [{ text: "Spinach", tone: "safe" }] },
-  { day: "6", chips: [] },
-  { day: "7", chips: [] },
-  { day: "8", chips: [] },
-  { day: "9", chips: [] },
-  { day: "10", chips: [] },
-  { day: "11", chips: [] },
-  { day: "12", chips: [{ text: "Chicken", tone: "critical" }, { text: "Eggs x6", tone: "critical" }], today: true },
-  { day: "13", chips: [{ text: "Beef Mince", tone: "warning" }] },
-  { day: "14", chips: [] },
-  { day: "15", chips: [] },
-  { day: "16", chips: [] },
-  { day: "17", chips: [] },
-  { day: "18", chips: [] },
-  { day: "19", chips: [] },
-  { day: "20", chips: [] },
-  { day: "21", chips: [] },
-  { day: "22", chips: [] },
-  { day: "23", chips: [] },
-  { day: "24", chips: [] },
-  { day: "25", chips: [] },
-  { day: "26", chips: [] },
-  { day: "27", chips: [] },
-  { day: "28", chips: [] },
-  { day: "29", chips: [] },
-  { day: "30", chips: [] },
-  { day: "31", chips: [] },
-];
+function getChipTone(expiryDate: Date): ChipTone {
+  const now = new Date();
+  const diffTime = expiryDate.getTime() - now.getTime();
+  const diffDays = diffTime / (1000 * 60 * 60 * 24);
+
+  if (diffDays <= 1) return "critical";
+  if (diffDays <= 3) return "warning";
+  return "safe";
+}
+
+function generateCalendarGrid(items: Food[], now: Date): DayCell[] {
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+  const startDay = startOfMonth.getDay();
+  const daysInMonth = endOfMonth.getDate();
+
+  const result: DayCell[] = [];
+
+  const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+  const prevMonthDays = prevMonth.getDate();
+  for (let i = startDay - 1; i >= 0; i--) {
+    const day = prevMonthDays - i;
+    result.push({
+      day: day.toString(),
+      muted: true,
+      chips: [],
+    });
+  }
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const cellDate = new Date(now.getFullYear(), now.getMonth(), day);
+    cellDate.setHours(0, 0, 0, 0);
+    const cellDateEnd = new Date(cellDate);
+    cellDateEnd.setHours(23, 59, 59, 999);
+
+    const dayItems = items.filter((item) => {
+      const itemDate = new Date(item.expiryDate);
+      itemDate.setHours(0, 0, 0, 0);
+      return itemDate.getTime() === cellDate.getTime();
+    });
+
+    const isToday =
+      day === now.getDate() &&
+      now.getMonth() === cellDate.getMonth() &&
+      now.getFullYear() === cellDate.getFullYear();
+
+    result.push({
+      day: day.toString(),
+      today: isToday,
+      chips: dayItems.map((item) => ({
+        text: `${item.name} (${item.quantity}${item.unit})`,
+        tone: getChipTone(item.expiryDate),
+      })),
+    });
+  }
+
+  const remaining = 42 - result.length;
+  for (let day = 1; day <= remaining; day++) {
+    result.push({
+      day: day.toString(),
+      muted: true,
+      chips: [],
+    });
+  }
+
+  return result;
+}
 
 function chipColors(tone: ChipTone) {
   switch (tone) {
@@ -88,17 +118,24 @@ function chipColors(tone: ChipTone) {
 }
 
 export default function Calendar() {
+  const { items } = useInventory();
   const { width } = useWindowDimensions();
   const gridWidth = width - Spacing.containerMargin * 2;
   const cellW = gridWidth / 7;
 
+  const now = new Date();
+  const grid = useMemo(
+    () => generateCalendarGrid(items, now),
+    [items, now]
+  );
+
   const rows = useMemo(() => {
     const out: DayCell[][] = [];
-    for (let i = 0; i < GRID.length; i += 7) {
-      out.push(GRID.slice(i, i + 7));
+    for (let i = 0; i < grid.length; i += 7) {
+      out.push(grid.slice(i, i + 7));
     }
     return out;
-  }, []);
+  }, [grid]);
 
   return (
     <SafeAreaView style={styles.safe} edges={["top"]}>

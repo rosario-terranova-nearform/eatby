@@ -16,18 +16,53 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useInventory } from "@/lib/inventory";
+import type { FoodCategory } from "@/lib/types";
 
 const STORAGE_OPTS = ["Fridge", "Pantry", "Freezer"] as const;
 
 export default function Scan() {
-  const [name, setName] = useState("Organic Spinach Mix");
+  const { addFood } = useInventory();
+
+  const [name, setName] = useState("");
   const [nameFocused, setNameFocused] = useState(false);
   const [qty, setQty] = useState(1);
   const [storage, setStorage] = useState<(typeof STORAGE_OPTS)[number]>(
     "Fridge",
   );
-  const [deadline, setDeadline] = useState(new Date(2026, 4, 27));
+  const [deadline, setDeadline] = useState(() => {
+    const d = new Date();
+    d.setDate(d.getDate() + 7);
+    d.setHours(23, 59, 59, 999);
+    return d;
+  });
   const [showDate, setShowDate] = useState(false);
+  const [added, setAdded] = useState(false);
+
+  const handleAdd = () => {
+    if (!name.trim()) return;
+
+    addFood({
+      name: name.trim(),
+      category: "other" as FoodCategory,
+      quantity: qty.toString(),
+      unit: "pack",
+      expiryDate: deadline,
+    });
+
+    setAdded(true);
+    setTimeout(() => {
+      setName("");
+      setQty(1);
+      const d = new Date();
+      d.setDate(d.getDate() + 7);
+      d.setHours(23, 59, 59, 999);
+      setDeadline(d);
+      setAdded(false);
+    }, 1500);
+  };
+
+  const isValid = name.trim().length > 0;
 
   return (
     <SafeAreaView style={styles.safe} edges={["top"]}>
@@ -167,17 +202,22 @@ export default function Scan() {
 
           <Pressable
             accessibilityRole="button"
+            disabled={!isValid || added}
+            onPress={handleAdd}
             style={({ pressed }) => [
               styles.primaryBtn,
-              pressed && { opacity: 0.92 },
+              !isValid && styles.primaryBtnDisabled,
+              pressed && isValid && !added && { opacity: 0.92 },
             ]}
           >
             <MaterialIcons
-              name="playlist-add"
+              name={added ? "check" : "playlist-add"}
               size={22}
               color={Colors.onPrimary}
             />
-            <Text style={styles.primaryBtnText}>Add to Calendar</Text>
+            <Text style={styles.primaryBtnText}>
+              {added ? "Added to Inventory" : "Add to Inventory"}
+            </Text>
           </Pressable>
         </View>
       </ScrollView>
@@ -424,6 +464,9 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary,
     paddingVertical: Spacing.md,
     borderRadius: Radii.lg,
+  },
+  primaryBtnDisabled: {
+    backgroundColor: Colors.surfaceContainerHigh,
   },
   primaryBtnText: {
     fontFamily: FontFamily.sansSemiBold,

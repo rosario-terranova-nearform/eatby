@@ -1,67 +1,38 @@
 import {
   EatByHeader,
   InventoryItemCard,
-  PrimaryFab,
   SectionStripe,
 } from "@/components/eatby";
+import { useInventory } from "@/lib/inventory";
+import type { InventoryItemDisplay } from "@/lib/types";
 import { Colors } from "@/theme/colors";
 import { FontFamily } from "@/theme/fonts";
 import { Spacing } from "@/theme/spacing";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const IMMEDIATE = [
-  {
-    title: "Greek Yogurt",
-    meta: "DAIRY • 2X 500G",
-    pillLabel: "14 HOURS LEFT",
-    expiryCaption: "Exp: Today, 11:59 PM",
-    urgency: "critical" as const,
-  },
-  {
-    title: "Fresh Raspberries",
-    meta: "PRODUCE • 1X PUNNET",
-    pillLabel: "1 DAY LEFT",
-    expiryCaption: "Exp: Tomorrow",
-    urgency: "critical" as const,
-  },
-];
+function groupByUrgency(items: InventoryItemDisplay[]) {
+  const critical: typeof items = [];
+  const warning: typeof items = [];
+  const safe: typeof items = [];
 
-const UPCOMING = [
-  {
-    title: "Organic Whole Milk",
-    meta: "DAIRY • 2L",
-    pillLabel: "2 DAYS LEFT",
-    expiryCaption: "Exp: Thursday",
-    urgency: "warning" as const,
-  },
-  {
-    title: "Chicken Breast",
-    meta: "MEAT • 500G",
-    pillLabel: "3 DAYS LEFT",
-    expiryCaption: "Exp: Friday",
-    urgency: "warning" as const,
-  },
-];
+  items.forEach((item) => {
+    if (item.urgency === "critical") critical.push(item);
+    else if (item.urgency === "warning") warning.push(item);
+    else safe.push(item);
+  });
 
-const STABLE = [
-  {
-    title: "Unsalted Butter",
-    meta: "DAIRY • 250G",
-    pillLabel: "12 DAYS LEFT",
-    expiryCaption: "Exp: Next Month",
-    urgency: "safe" as const,
-  },
-  {
-    title: "Shredded Mozzarella",
-    meta: "DAIRY • 1KG",
-    pillLabel: "24 DAYS LEFT",
-    expiryCaption: "Exp: Oct 12",
-    urgency: "safe" as const,
-  },
-];
+  return { critical, warning, safe };
+}
 
 export default function Inventory() {
+  const { getDisplayItems } = useInventory();
+  const items = getDisplayItems();
+  const grouped = groupByUrgency(items);
+  const critical = grouped.critical;
+  const warning = grouped.warning;
+  const safe = grouped.safe;
+
   return (
     <SafeAreaView style={styles.safe} edges={["top"]}>
       <EatByHeader variant="inventory" />
@@ -71,39 +42,58 @@ export default function Inventory() {
       >
         <View style={styles.titleRow}>
           <Text style={styles.pageTitle}>Inventory</Text>
+          <Text style={styles.itemCount}>
+            {items.length} {items.length === 1 ? "item" : "items"}
+          </Text>
         </View>
 
-        <View style={styles.section}>
-          <SectionStripe
-            label="IMMEDIATE ATTENTION REQUIRED"
-            urgency="immediate"
-          />
-          <View style={styles.list}>
-            {IMMEDIATE.map((item) => (
-              <InventoryItemCard key={item.title} {...item} />
-            ))}
+        {items.length === 0 ? (
+          <View style={styles.emptyState}>
+            <Text style={styles.emptyTitle}>No items yet</Text>
+            <Text style={styles.emptySubtitle}>
+              Go to the scan tab to add your first food item
+            </Text>
           </View>
-        </View>
+        ) : (
+          <>
+            {critical.length > 0 && (
+              <View style={styles.section}>
+                <SectionStripe
+                  label="IMMEDIATE ATTENTION REQUIRED"
+                  urgency="immediate"
+                />
+                <View style={styles.list}>
+                  {critical.map((item) => (
+                    <InventoryItemCard key={item.id} {...item} />
+                  ))}
+                </View>
+              </View>
+            )}
 
-        <View style={styles.section}>
-          <SectionStripe label="UPCOMING DEADLINES" urgency="upcoming" />
-          <View style={styles.list}>
-            {UPCOMING.map((item) => (
-              <InventoryItemCard key={item.title} {...item} />
-            ))}
-          </View>
-        </View>
+            {warning.length > 0 && (
+              <View style={styles.section}>
+                <SectionStripe label="UPCOMING DEADLINES" urgency="upcoming" />
+                <View style={styles.list}>
+                  {warning.map((item) => (
+                    <InventoryItemCard key={item.id} {...item} />
+                  ))}
+                </View>
+              </View>
+            )}
 
-        <View style={styles.section}>
-          <SectionStripe label="STABLE INVENTORY" urgency="stable" />
-          <View style={styles.list}>
-            {STABLE.map((item) => (
-              <InventoryItemCard key={item.title} {...item} />
-            ))}
-          </View>
-        </View>
+            {safe.length > 0 && (
+              <View style={styles.section}>
+                <SectionStripe label="STABLE INVENTORY" urgency="stable" />
+                <View style={styles.list}>
+                  {safe.map((item) => (
+                    <InventoryItemCard key={item.id} {...item} />
+                  ))}
+                </View>
+              </View>
+            )}
+          </>
+        )}
       </ScrollView>
-      <PrimaryFab />
     </SafeAreaView>
   );
 }
@@ -116,13 +106,16 @@ const styles = StyleSheet.create({
   scroll: {
     paddingHorizontal: Spacing.containerMargin,
     paddingTop: Spacing.md,
-    paddingBottom: 120,
+    paddingBottom: Spacing.xl,
   },
   titleRow: {
     borderBottomWidth: 2,
     borderBottomColor: Colors.onSurface,
     paddingBottom: Spacing.xs,
     marginBottom: Spacing.lg,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "baseline",
   },
   pageTitle: {
     fontFamily: FontFamily.sansSemiBold,
@@ -132,11 +125,37 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: Colors.onSurface,
   },
+  itemCount: {
+    fontFamily: FontFamily.monoMedium,
+    fontSize: 12,
+    lineHeight: 16,
+    letterSpacing: 0.6,
+    color: Colors.onSurfaceVariant,
+  },
   section: {
     gap: Spacing.base,
     marginBottom: Spacing.lg,
   },
   list: {
     gap: Spacing.base,
+  },
+  emptyState: {
+    paddingVertical: Spacing.xxl,
+    alignItems: "center",
+  },
+  emptyTitle: {
+    fontFamily: FontFamily.sansSemiBold,
+    fontSize: 20,
+    lineHeight: 28,
+    fontWeight: "600",
+    color: Colors.onSurface,
+    marginBottom: Spacing.sm,
+  },
+  emptySubtitle: {
+    fontFamily: FontFamily.sansRegular,
+    fontSize: 16,
+    lineHeight: 24,
+    color: Colors.onSurfaceVariant,
+    textAlign: "center",
   },
 });
