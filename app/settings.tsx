@@ -1,18 +1,12 @@
-import { MaterialIcons } from "@expo/vector-icons";
 import { EatByHeader } from "@/components/eatby";
 import { Colors } from "@/theme/colors";
 import { FontFamily } from "@/theme/fonts";
 import { Radii } from "@/theme/radii";
 import { Spacing } from "@/theme/spacing";
+import { MaterialIcons } from "@expo/vector-icons";
 import Constants from "expo-constants";
 import { useState } from "react";
-import {
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const ALERT_OPTIONS = [
@@ -76,10 +70,7 @@ export default function Settings() {
                 style={[styles.toggle, pushOn && styles.toggleOn]}
               >
                 <View
-                  style={[
-                    styles.toggleKnob,
-                    pushOn && styles.toggleKnobOn,
-                  ]}
+                  style={[styles.toggleKnob, pushOn && styles.toggleKnobOn]}
                 />
               </Pressable>
             </View>
@@ -92,7 +83,7 @@ export default function Settings() {
             <View style={[styles.cardRowBetween, styles.cardRowBorder]}>
               <Text style={styles.rowTitlePlain}>Version</Text>
               <Text style={styles.monoMeta}>
-                {Constants.expoConfig?.version ?? "1.0.0"} (Stable)
+                {Constants.expoConfig?.version ?? "n/a"} (Stable)
               </Text>
             </View>
             <Pressable
@@ -110,7 +101,11 @@ export default function Settings() {
 
         <View style={styles.footer}>
           <View style={styles.footerMark}>
-            <MaterialIcons name="inventory-2" size={40} color={Colors.outline} />
+            <MaterialIcons
+              name="inventory-2"
+              size={40}
+              color={Colors.outline}
+            />
           </View>
           <Text style={styles.footerCaption}>
             Professional Inventory Control

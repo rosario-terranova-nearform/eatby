@@ -1,5 +1,4 @@
-export { EatByHeader } from "./EatByHeader";
-export { SectionStripe } from "./SectionStripe";
-export { InventoryItemCard } from "./InventoryItemCard";
 export { AlertListItem } from "./AlertListItem";
-export { PrimaryFab } from "./PrimaryFab";
+export { EatByHeader } from "./EatByHeader";
+export { EditFoodModal } from "./EditFoodModal";
+export { InventoryItemCard } from "./InventoryItemCard";

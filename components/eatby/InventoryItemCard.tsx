@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { Colors } from "@/theme/colors";
 import { Spacing } from "@/theme/spacing";
 import { Radii } from "@/theme/radii";
@@ -8,10 +8,10 @@ export type InventoryUrgency = "critical" | "warning" | "safe";
 
 export type InventoryItemCardProps = {
   title: string;
-  meta: string;
   pillLabel: string;
   expiryCaption: string;
   urgency: InventoryUrgency;
+  onPress?: () => void;
 };
 
 const barColor: Record<InventoryUrgency, string> = {
@@ -43,19 +43,18 @@ const pillStyle: Record<
 
 export function InventoryItemCard({
   title,
-  meta,
   pillLabel,
   expiryCaption,
   urgency,
+  onPress,
 }: InventoryItemCardProps) {
   const pill = pillStyle[urgency];
-  return (
+  const content = (
     <View style={styles.card}>
       <View style={[styles.bar, { backgroundColor: barColor[urgency] }]} />
       <View style={styles.body}>
         <View style={styles.colLeft}>
           <Text style={styles.title}>{title}</Text>
-          <Text style={styles.meta}>{meta}</Text>
         </View>
         <View style={styles.colRight}>
           <Text
@@ -75,6 +74,20 @@ export function InventoryItemCard({
       </View>
     </View>
   );
+
+  if (onPress) {
+    return (
+      <Pressable
+        onPress={onPress}
+        style={({ pressed }) => pressed && styles.pressed}
+        accessibilityRole="button"
+      >
+        {content}
+      </Pressable>
+    );
+  }
+
+  return content;
 }
 
 const styles = StyleSheet.create({
@@ -113,15 +126,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: Colors.onSurface,
   },
-  meta: {
-    fontFamily: FontFamily.monoMedium,
-    fontSize: 12,
-    lineHeight: 16,
-    letterSpacing: 0.6,
-    color: Colors.onSurfaceVariant,
-    textTransform: "uppercase",
-    marginTop: 2,
-  },
   pill: {
     fontFamily: FontFamily.monoMedium,
     fontSize: 12,
@@ -141,5 +145,8 @@ const styles = StyleSheet.create({
     lineHeight: 16,
     color: Colors.onSurfaceVariant,
     marginTop: 4,
+  },
+  pressed: {
+    opacity: 0.8,
   },
 });

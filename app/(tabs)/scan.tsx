@@ -1,10 +1,11 @@
 import { EatByHeader } from "@/components/eatby";
+import { useInventory } from "@/lib/inventory";
 import { Colors } from "@/theme/colors";
 import { FontFamily } from "@/theme/fonts";
 import { Radii } from "@/theme/radii";
 import { Spacing } from "@/theme/spacing";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import { MaterialIcons } from "@expo/vector-icons";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { useState } from "react";
 import {
   Platform,
@@ -17,17 +18,40 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const STORAGE_OPTS = ["Fridge", "Pantry", "Freezer"] as const;
-
 export default function Scan() {
-  const [name, setName] = useState("Organic Spinach Mix");
+  const { addFood } = useInventory();
+
+  const [name, setName] = useState("");
   const [nameFocused, setNameFocused] = useState(false);
-  const [qty, setQty] = useState(1);
-  const [storage, setStorage] = useState<(typeof STORAGE_OPTS)[number]>(
-    "Fridge",
-  );
-  const [deadline, setDeadline] = useState(new Date(2026, 4, 27));
+  const [deadline, setDeadline] = useState(() => {
+    const d = new Date();
+    d.setDate(d.getDate() + 7);
+    d.setHours(23, 59, 59, 999);
+    return d;
+  });
   const [showDate, setShowDate] = useState(false);
+  const [added, setAdded] = useState(false);
+
+  const handleAdd = () => {
+    if (!name.trim()) return;
+
+    addFood({
+      name: name.trim(),
+      expiryDate: deadline,
+    });
+
+    setAdded(true);
+    setTimeout(() => {
+      setName("");
+      const d = new Date();
+      d.setDate(d.getDate() + 7);
+      d.setHours(23, 59, 59, 999);
+      setDeadline(d);
+      setAdded(false);
+    }, 1500);
+  };
+
+  const isValid = name.trim().length > 0;
 
   return (
     <SafeAreaView style={styles.safe} edges={["top"]}>
@@ -59,10 +83,7 @@ export default function Scan() {
                 onChangeText={setName}
                 onFocus={() => setNameFocused(true)}
                 onBlur={() => setNameFocused(false)}
-                style={[
-                  styles.input,
-                  nameFocused && styles.inputFocused,
-                ]}
+                style={[styles.input, nameFocused && styles.inputFocused]}
                 placeholderTextColor={Colors.outline}
               />
               <MaterialIcons
@@ -75,7 +96,7 @@ export default function Scan() {
           </View>
 
           <View style={styles.field}>
-            <Text style={styles.label}>Deadline (Expiry Date)</Text>
+            <Text style={styles.label}>Expiry Date</Text>
             <Pressable
               accessibilityRole="button"
               onPress={() => setShowDate(true)}
@@ -88,9 +109,7 @@ export default function Scan() {
                   color={Colors.primary}
                   style={{ marginRight: Spacing.sm }}
                 />
-                <Text style={styles.dateText}>
-                  {deadline.toDateString()}
-                </Text>
+                <Text style={styles.dateText}>{deadline.toDateString()}</Text>
               </View>
             </Pressable>
             {showDate ? (
@@ -116,68 +135,24 @@ export default function Scan() {
             ) : null}
           </View>
 
-          <View style={styles.row2}>
-            <View style={[styles.field, { flex: 1 }]}>
-              <Text style={styles.label}>Quantity</Text>
-              <View style={styles.stepper}>
-                <Pressable
-                  accessibilityRole="button"
-                  onPress={() => setQty((q) => Math.max(1, q - 1))}
-                  style={[styles.stepperSide, styles.stepperSideLeft]}
-                >
-                  <Text style={styles.stepperBtnText}>−</Text>
-                </Pressable>
-                <Text style={styles.stepperVal}>{qty} pack</Text>
-                <Pressable
-                  accessibilityRole="button"
-                  onPress={() => setQty((q) => q + 1)}
-                  style={[styles.stepperSide, styles.stepperSideRight]}
-                >
-                  <Text style={styles.stepperBtnText}>+</Text>
-                </Pressable>
-              </View>
-            </View>
-            <View style={[styles.field, { flex: 1 }]}>
-              <Text style={styles.label}>Storage</Text>
-              <View style={styles.storageRow}>
-                {STORAGE_OPTS.map((opt) => {
-                  const on = storage === opt;
-                  return (
-                    <Pressable
-                      key={opt}
-                      accessibilityRole="button"
-                      accessibilityState={{ selected: on }}
-                      onPress={() => setStorage(opt)}
-                      style={[styles.storageChip, on && styles.storageChipOn]}
-                    >
-                      <Text
-                        style={[
-                          styles.storageChipText,
-                          on && styles.storageChipTextOn,
-                        ]}
-                      >
-                        {opt}
-                      </Text>
-                    </Pressable>
-                  );
-                })}
-              </View>
-            </View>
-          </View>
-
           <Pressable
             accessibilityRole="button"
+            disabled={!isValid || added}
+            onPress={handleAdd}
             style={({ pressed }) => [
               styles.primaryBtn,
-              pressed && { opacity: 0.92 },
+              !isValid && styles.primaryBtnDisabled,
+              pressed && isValid && !added && { opacity: 0.92 },
             ]}
           >
             <MaterialIcons
-              name="playlist-add"
+              name={added ? "check" : "playlist-add"}
               size={22}
               color={Colors.onPrimary}
             />
-            <Text style={styles.primaryBtnText}>Add to Calendar</Text>
+            <Text style={styles.primaryBtnText}>
+              {added ? "Added to Inventory" : "Add to Inventory"}
+            </Text>
           </Pressable>
         </View>
       </ScrollView>
@@ -424,6 +399,9 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary,
     paddingVertical: Spacing.md,
     borderRadius: Radii.lg,
+  },
+  primaryBtnDisabled: {
+    backgroundColor: Colors.surfaceContainerHigh,
   },
   primaryBtnText: {
     fontFamily: FontFamily.sansSemiBold,
