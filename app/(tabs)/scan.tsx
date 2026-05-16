@@ -1,10 +1,12 @@
 import { EatByHeader } from "@/components/eatby";
+import { useInventory } from "@/lib/inventory";
+import type { FoodCategory } from "@/lib/types";
 import { Colors } from "@/theme/colors";
 import { FontFamily } from "@/theme/fonts";
 import { Radii } from "@/theme/radii";
 import { Spacing } from "@/theme/spacing";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import { MaterialIcons } from "@expo/vector-icons";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { useState } from "react";
 import {
   Platform,
@@ -16,8 +18,6 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useInventory } from "@/lib/inventory";
-import type { FoodCategory } from "@/lib/types";
 
 const STORAGE_OPTS = ["Fridge", "Pantry", "Freezer"] as const;
 
@@ -27,9 +27,8 @@ export default function Scan() {
   const [name, setName] = useState("");
   const [nameFocused, setNameFocused] = useState(false);
   const [qty, setQty] = useState(1);
-  const [storage, setStorage] = useState<(typeof STORAGE_OPTS)[number]>(
-    "Fridge",
-  );
+  const [storage, setStorage] =
+    useState<(typeof STORAGE_OPTS)[number]>("Fridge");
   const [deadline, setDeadline] = useState(() => {
     const d = new Date();
     d.setDate(d.getDate() + 7);
@@ -94,10 +93,7 @@ export default function Scan() {
                 onChangeText={setName}
                 onFocus={() => setNameFocused(true)}
                 onBlur={() => setNameFocused(false)}
-                style={[
-                  styles.input,
-                  nameFocused && styles.inputFocused,
-                ]}
+                style={[styles.input, nameFocused && styles.inputFocused]}
                 placeholderTextColor={Colors.outline}
               />
               <MaterialIcons
@@ -110,7 +106,7 @@ export default function Scan() {
           </View>
 
           <View style={styles.field}>
-            <Text style={styles.label}>Deadline (Expiry Date)</Text>
+            <Text style={styles.label}>Expiry Date</Text>
             <Pressable
               accessibilityRole="button"
               onPress={() => setShowDate(true)}
@@ -123,9 +119,7 @@ export default function Scan() {
                   color={Colors.primary}
                   style={{ marginRight: Spacing.sm }}
                 />
-                <Text style={styles.dateText}>
-                  {deadline.toDateString()}
-                </Text>
+                <Text style={styles.dateText}>{deadline.toDateString()}</Text>
               </View>
             </Pressable>
             {showDate ? (

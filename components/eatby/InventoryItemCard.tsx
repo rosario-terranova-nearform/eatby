@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { Colors } from "@/theme/colors";
 import { Spacing } from "@/theme/spacing";
 import { Radii } from "@/theme/radii";
@@ -12,6 +12,7 @@ export type InventoryItemCardProps = {
   pillLabel: string;
   expiryCaption: string;
   urgency: InventoryUrgency;
+  onPress?: () => void;
 };
 
 const barColor: Record<InventoryUrgency, string> = {
@@ -47,9 +48,10 @@ export function InventoryItemCard({
   pillLabel,
   expiryCaption,
   urgency,
+  onPress,
 }: InventoryItemCardProps) {
   const pill = pillStyle[urgency];
-  return (
+  const content = (
     <View style={styles.card}>
       <View style={[styles.bar, { backgroundColor: barColor[urgency] }]} />
       <View style={styles.body}>
@@ -75,6 +77,20 @@ export function InventoryItemCard({
       </View>
     </View>
   );
+
+  if (onPress) {
+    return (
+      <Pressable
+        onPress={onPress}
+        style={({ pressed }) => pressed && styles.pressed}
+        accessibilityRole="button"
+      >
+        {content}
+      </Pressable>
+    );
+  }
+
+  return content;
 }
 
 const styles = StyleSheet.create({
@@ -141,5 +157,8 @@ const styles = StyleSheet.create({
     lineHeight: 16,
     color: Colors.onSurfaceVariant,
     marginTop: 4,
+  },
+  pressed: {
+    opacity: 0.8,
   },
 });

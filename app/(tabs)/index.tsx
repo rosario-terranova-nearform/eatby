@@ -1,13 +1,15 @@
 import {
   EatByHeader,
+  EditFoodModal,
   InventoryItemCard,
   SectionStripe,
 } from "@/components/eatby";
 import { useInventory } from "@/lib/inventory";
-import type { InventoryItemDisplay } from "@/lib/types";
+import type { Food, InventoryItemDisplay } from "@/lib/types";
 import { Colors } from "@/theme/colors";
 import { FontFamily } from "@/theme/fonts";
 import { Spacing } from "@/theme/spacing";
+import { useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -26,12 +28,30 @@ function groupByUrgency(items: InventoryItemDisplay[]) {
 }
 
 export default function Inventory() {
-  const { getDisplayItems } = useInventory();
+  const { getDisplayItems, getFoodById, updateFood, removeFood } =
+    useInventory();
+  const [selectedFoodId, setSelectedFoodId] = useState<string | null>(null);
   const items = getDisplayItems();
   const grouped = groupByUrgency(items);
   const critical = grouped.critical;
   const warning = grouped.warning;
   const safe = grouped.safe;
+
+  const selectedFood = selectedFoodId
+    ? (getFoodById(selectedFoodId) ?? null)
+    : null;
+
+  const handleSave = (updates: Partial<Omit<Food, "id" | "addedAt">>) => {
+    if (selectedFoodId) {
+      updateFood(selectedFoodId, updates);
+    }
+  };
+
+  const handleDelete = () => {
+    if (selectedFoodId) {
+      removeFood(selectedFoodId);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.safe} edges={["top"]}>
@@ -64,7 +84,11 @@ export default function Inventory() {
                 />
                 <View style={styles.list}>
                   {critical.map((item) => (
-                    <InventoryItemCard key={item.id} {...item} />
+                    <InventoryItemCard
+                      key={item.id}
+                      {...item}
+                      onPress={() => setSelectedFoodId(item.id)}
+                    />
                   ))}
                 </View>
               </View>
@@ -75,7 +99,11 @@ export default function Inventory() {
                 <SectionStripe label="UPCOMING DEADLINES" urgency="upcoming" />
                 <View style={styles.list}>
                   {warning.map((item) => (
-                    <InventoryItemCard key={item.id} {...item} />
+                    <InventoryItemCard
+                      key={item.id}
+                      {...item}
+                      onPress={() => setSelectedFoodId(item.id)}
+                    />
                   ))}
                 </View>
               </View>
@@ -83,10 +111,13 @@ export default function Inventory() {
 
             {safe.length > 0 && (
               <View style={styles.section}>
-                <SectionStripe label="STABLE INVENTORY" urgency="stable" />
                 <View style={styles.list}>
                   {safe.map((item) => (
-                    <InventoryItemCard key={item.id} {...item} />
+                    <InventoryItemCard
+                      key={item.id}
+                      {...item}
+                      onPress={() => setSelectedFoodId(item.id)}
+                    />
                   ))}
                 </View>
               </View>
@@ -94,6 +125,14 @@ export default function Inventory() {
           </>
         )}
       </ScrollView>
+
+      <EditFoodModal
+        visible={selectedFoodId !== null}
+        food={selectedFood}
+        onClose={() => setSelectedFoodId(null)}
+        onSave={handleSave}
+        onDelete={handleDelete}
+      />
     </SafeAreaView>
   );
 }

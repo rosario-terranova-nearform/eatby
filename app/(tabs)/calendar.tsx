@@ -1,10 +1,12 @@
-import { EatByHeader } from "@/components/eatby";
+import { useState } from "react";
+import { EatByHeader, EditFoodModal } from "@/components/eatby";
 import { Colors } from "@/theme/colors";
 import { FontFamily } from "@/theme/fonts";
 import { Radii } from "@/theme/radii";
 import { Spacing } from "@/theme/spacing";
 import { useMemo } from "react";
 import {
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -19,11 +21,17 @@ const WEEKDAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"] as const;
 
 type ChipTone = "safe" | "critical" | "warning";
 
+type Chip = {
+  id: string;
+  text: string;
+  tone: ChipTone;
+};
+
 type DayCell = {
   day: string;
   muted?: boolean;
   today?: boolean;
-  chips: { text: string; tone: ChipTone }[];
+  chips: Chip[];
 };
 
 function getChipTone(expiryDate: Date): ChipTone {
@@ -76,6 +84,7 @@ function generateCalendarGrid(items: Food[], now: Date): DayCell[] {
       day: day.toString(),
       today: isToday,
       chips: dayItems.map((item) => ({
+        id: item.id,
         text: `${item.name} (${item.quantity}${item.unit})`,
         tone: getChipTone(item.expiryDate),
       })),
@@ -118,7 +127,8 @@ function chipColors(tone: ChipTone) {
 }
 
 export default function Calendar() {
-  const { items } = useInventory();
+  const { items, getFoodById, updateFood, removeFood } = useInventory();
+  const [selectedFoodId, setSelectedFoodId] = useState<string | null>(null);
   const { width } = useWindowDimensions();
   const gridWidth = width - Spacing.containerMargin * 2;
   const cellW = gridWidth / 7;
@@ -136,6 +146,20 @@ export default function Calendar() {
     }
     return out;
   }, [grid]);
+
+  const selectedFood = selectedFoodId ? getFoodById(selectedFoodId) ?? null : null;
+
+  const handleSave = (updates: Partial<Omit<Food, "id" | "addedAt">>) => {
+    if (selectedFoodId) {
+      updateFood(selectedFoodId, updates);
+    }
+  };
+
+  const handleDelete = () => {
+    if (selectedFoodId) {
+      removeFood(selectedFoodId);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.safe} edges={["top"]}>
@@ -184,14 +208,16 @@ export default function Calendar() {
                   {cell.chips.map((c) => {
                     const cc = chipColors(c.tone);
                     return (
-                      <View
-                        key={c.text}
-                        style={[
+                      <Pressable
+                        key={c.id}
+                        onPress={() => setSelectedFoodId(c.id)}
+                        style={({ pressed }) => [
                           styles.chip,
                           {
                             backgroundColor: cc.bg,
                             borderLeftColor: cc.border,
                           },
+                          pressed && styles.chipPressed,
                         ]}
                       >
                         {c.tone === "critical" ? (
@@ -203,7 +229,7 @@ export default function Calendar() {
                         >
                           {c.text}
                         </Text>
-                      </View>
+                      </Pressable>
                     );
                   })}
                 </View>
@@ -212,6 +238,14 @@ export default function Calendar() {
           ))}
         </View>
       </ScrollView>
+
+      <EditFoodModal
+        visible={selectedFoodId !== null}
+        food={selectedFood}
+        onClose={() => setSelectedFoodId(null)}
+        onSave={handleSave}
+        onDelete={handleDelete}
+      />
     </SafeAreaView>
   );
 }
@@ -312,5 +346,8 @@ const styles = StyleSheet.create({
     lineHeight: 14,
     fontWeight: "700",
     minWidth: 0,
+  },
+  chipPressed: {
+    opacity: 0.75,
   },
 });

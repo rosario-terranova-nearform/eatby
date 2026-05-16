@@ -11,8 +11,10 @@ import { Food, InventoryItemDisplay, InventoryUrgency } from "./types";
 interface InventoryContextType {
   items: Food[];
   addFood: (food: Omit<Food, "id" | "addedAt">) => void;
+  updateFood: (id: string, updates: Partial<Omit<Food, "id" | "addedAt">>) => void;
   removeFood: (id: string) => void;
   getDisplayItems: () => InventoryItemDisplay[];
+  getFoodById: (id: string) => Food | undefined;
 }
 
 const InventoryContext = createContext<InventoryContextType | null>(null);
@@ -118,9 +120,25 @@ export function InventoryProvider({ children }: { children: ReactNode }) {
     []
   );
 
+  const updateFood = useCallback(
+    (id: string, updates: Partial<Omit<Food, "id" | "addedAt">>) => {
+      setItems((prev) =>
+        prev.map((item) =>
+          item.id === id ? { ...item, ...updates } : item
+        )
+      );
+    },
+    []
+  );
+
   const removeFood = useCallback((id: string) => {
     setItems((prev) => prev.filter((item) => item.id !== id));
   }, []);
+
+  const getFoodById = useCallback(
+    (id: string) => items.find((item) => item.id === id),
+    [items]
+  );
 
   const getDisplayItems = useCallback((): InventoryItemDisplay[] => {
     return items
@@ -146,10 +164,12 @@ export function InventoryProvider({ children }: { children: ReactNode }) {
     () => ({
       items,
       addFood,
+      updateFood,
       removeFood,
       getDisplayItems,
+      getFoodById,
     }),
-    [items, addFood, removeFood, getDisplayItems]
+    [items, addFood, updateFood, removeFood, getDisplayItems, getFoodById]
   );
 
   return (
