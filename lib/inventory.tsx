@@ -81,10 +81,10 @@ function formatExpiryDate(expiryDate: Date): string {
   if (daysFromNow > 30) {
     options.month = "short";
     options.day = "numeric";
-    return `Exp: ${expiryDate.toLocaleDateString("en-US", options)}`;
+    return `Exp: ${expiryDate.toLocaleDateString("en-GB", options)}`;
   }
 
-  return `Exp: ${expiryDate.toLocaleDateString("en-US", options)}`;
+  return `Exp: ${expiryDate.toLocaleDateString("en-GB", options)}`;
 }
 
 export function InventoryProvider({ children }: { children: ReactNode }) {

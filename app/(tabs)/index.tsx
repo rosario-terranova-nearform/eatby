@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.lg,
   },
   list: {
-    gap: Spacing.base,
+    gap: Spacing.md,
   },
   emptyState: {
     paddingVertical: Spacing.xxl,

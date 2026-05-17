@@ -98,19 +98,6 @@ export default function Settings() {
             </Pressable>
           </View>
         </View>
-
-        <View style={styles.footer}>
-          <View style={styles.footerMark}>
-            <MaterialIcons
-              name="inventory-2"
-              size={40}
-              color={Colors.outline}
-            />
-          </View>
-          <Text style={styles.footerCaption}>
-            Professional Inventory Control
-          </Text>
-        </View>
       </ScrollView>
     </SafeAreaView>
   );

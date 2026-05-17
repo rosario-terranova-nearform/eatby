@@ -1,12 +1,9 @@
-import { MaterialIcons } from "@expo/vector-icons";
-import {
-  AlertListItem,
-  EatByHeader,
-} from "@/components/eatby";
+import { AlertListItem, EatByHeader } from "@/components/eatby";
 import { Colors } from "@/theme/colors";
 import { FontFamily } from "@/theme/fonts";
 import { Radii } from "@/theme/radii";
 import { Spacing } from "@/theme/spacing";
+import { MaterialIcons } from "@expo/vector-icons";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -132,13 +129,6 @@ export default function Alert() {
                 <Text style={styles.insightBody}>{card.body}</Text>
               </View>
             ))}
-          </View>
-        </View>
-
-        <View style={styles.hero}>
-          <View style={styles.heroInner}>
-            <MaterialIcons name="inventory" size={48} color={Colors.outline} />
-            <Text style={styles.heroCaption}>Professional inventory rhythm</Text>
           </View>
         </View>
       </ScrollView>

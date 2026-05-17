@@ -9,19 +9,15 @@ import { Spacing } from "@/theme/spacing";
 
 function TabBarButton(props: BottomTabBarButtonProps) {
   const { onPress, accessibilityState, children } = props;
-  const focused = accessibilityState?.selected ?? false;
+  const focused = accessibilityState?.selected;
 
   return (
     <Pressable
-      accessibilityRole="button"
-      accessibilityState={accessibilityState}
       onPress={onPress}
-      style={({ pressed }) => [
-        styles.tabPress,
-        focused && styles.tabPressActive,
-        pressed && !focused && styles.tabPressPressed,
-      ]}
+      style={styles.tabPress}
+      testID={focused ? "active-tab" : "inactive-tab"}
     >
+      {focused && <View style={styles.activeBg} />}
       <View style={styles.tabInner}>{children}</View>
     </Pressable>
   );
@@ -35,6 +31,7 @@ export default function TabsLayout() {
         tabBarShowLabel: true,
         tabBarActiveTintColor: Colors.primary,
         tabBarInactiveTintColor: Colors.onSurfaceVariant,
+        tabBarActiveBackgroundColor: "rgba(16, 185, 129, 0.15)",
         tabBarStyle: {
           backgroundColor: Colors.surface,
           borderTopWidth: 1,
@@ -44,6 +41,7 @@ export default function TabsLayout() {
           height: 64,
           paddingTop: Spacing.xs,
           paddingBottom: Spacing.xs,
+          paddingHorizontal: Spacing.sm,
         },
         tabBarLabel: ({ focused, children, color }) => (
           <Text
@@ -53,6 +51,7 @@ export default function TabsLayout() {
               lineHeight: 14,
               letterSpacing: 0.5,
               marginTop: 2,
+              paddingBottom: 2,
               color: typeof color === "string" ? color : Colors.onSurfaceVariant,
               fontWeight: focused ? "700" : "500",
             }}
@@ -63,7 +62,6 @@ export default function TabsLayout() {
         tabBarIconStyle: {
           marginBottom: 0,
         },
-        tabBarButton: (p) => <TabBarButton {...p} />,
       }}
     >
       <Tabs.Screen
@@ -124,12 +122,21 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 4,
-    paddingHorizontal: Spacing.xs,
-    borderRadius: Radii.xl,
+    paddingVertical: 8,
+    paddingHorizontal: Spacing.sm,
+    borderRadius: Radii.lg,
+  },
+  activeBg: {
+    position: "absolute",
+    top: 4,
+    bottom: 4,
+    left: 8,
+    right: 8,
+    backgroundColor: "#10b981",
+    borderRadius: Radii.md,
   },
   tabPressActive: {
-    backgroundColor: "rgba(16, 185, 129, 0.2)",
+    backgroundColor: "#10b981",
   },
   tabPressPressed: {
     opacity: 0.85,

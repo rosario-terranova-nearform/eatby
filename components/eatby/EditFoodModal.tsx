@@ -76,8 +76,6 @@ export function EditFoodModal({
               style={styles.keyboardAvoid}
             >
               <SafeAreaView style={styles.sheet}>
-                <View style={styles.handle} />
-
                 <View style={styles.header}>
                   <Text style={styles.title}>Edit Item</Text>
                   <Pressable
@@ -119,7 +117,7 @@ export function EditFoodModal({
                         color={Colors.primary}
                       />
                       <Text style={styles.dateText}>
-                        {expiryDate.toDateString()}
+                        {expiryDate.toLocaleDateString("en-GB")}
                       </Text>
                     </Pressable>
                     {showDatePicker && (
@@ -205,20 +203,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0,
     paddingBottom: Spacing.xl,
   },
-  handle: {
-    width: 40,
-    height: 4,
-    backgroundColor: Colors.outlineVariant,
-    borderRadius: 2,
-    alignSelf: "center",
-    marginTop: Spacing.sm,
-    marginBottom: Spacing.md,
-  },
   header: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: Spacing.containerMargin,
+    paddingTop: Spacing.md,
     paddingBottom: Spacing.md,
     borderBottomWidth: 1,
     borderBottomColor: Colors.outlineVariant,

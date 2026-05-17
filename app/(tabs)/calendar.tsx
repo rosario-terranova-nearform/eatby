@@ -44,15 +44,16 @@ function getChipTone(expiryDate: Date): ChipTone {
   return "safe";
 }
 
-function generateCalendarGrid(items: Food[], now: Date): DayCell[] {
-  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-  const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+function generateCalendarGrid(items: Food[], viewDate: Date): DayCell[] {
+  const now = new Date();
+  const startOfMonth = new Date(viewDate.getFullYear(), viewDate.getMonth(), 1);
+  const endOfMonth = new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 0);
   const startDay = startOfMonth.getDay();
   const daysInMonth = endOfMonth.getDate();
 
   const result: DayCell[] = [];
 
-  const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+  const prevMonth = new Date(viewDate.getFullYear(), viewDate.getMonth(), 0);
   const prevMonthDays = prevMonth.getDate();
   for (let i = startDay - 1; i >= 0; i--) {
     const day = prevMonthDays - i;
@@ -64,7 +65,7 @@ function generateCalendarGrid(items: Food[], now: Date): DayCell[] {
   }
 
   for (let day = 1; day <= daysInMonth; day++) {
-    const cellDate = new Date(now.getFullYear(), now.getMonth(), day);
+    const cellDate = new Date(viewDate.getFullYear(), viewDate.getMonth(), day);
     cellDate.setHours(0, 0, 0, 0);
     const cellDateEnd = new Date(cellDate);
     cellDateEnd.setHours(23, 59, 59, 999);
@@ -142,7 +143,7 @@ export default function Calendar() {
     setCurrentDate((d) => new Date(d.getFullYear(), d.getMonth() + 1, 1));
   };
 
-  const monthYearLabel = currentDate.toLocaleDateString("en-US", {
+  const monthYearLabel = currentDate.toLocaleDateString("en-GB", {
     month: "long",
     year: "numeric",
   });
@@ -227,6 +228,7 @@ export default function Calendar() {
                     styles.dayCell,
                     { width: cellW, minHeight: 100 },
                     cell.muted && styles.dayCellMuted,
+                    cell.today && styles.dayCellToday,
                     ci < 6 && styles.dayCellBorderR,
                     styles.dayCellBorderB,
                   ]}
@@ -356,6 +358,9 @@ const styles = StyleSheet.create({
   dayCellMuted: {
     backgroundColor: Colors.surfaceContainerLow,
     opacity: 0.55,
+  },
+  dayCellToday: {
+    backgroundColor: "#FFF9C4",
   },
   dayCellBorderR: {
     borderRightWidth: 1,

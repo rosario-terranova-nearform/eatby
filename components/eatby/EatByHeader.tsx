@@ -18,7 +18,7 @@ type EatByHeaderProps = {
 
 export function EatByHeader({ variant }: EatByHeaderProps) {
   const router = useRouter();
-  const showInventoryMark = variant !== "alerts";
+  const showInventoryMark = true;
   const showSearch = variant === "inventory";
   const showSettings = variant !== "settings";
   const isSettings = variant === "settings";

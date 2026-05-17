@@ -109,7 +109,7 @@ export default function Scan() {
                   color={Colors.primary}
                   style={{ marginRight: Spacing.sm }}
                 />
-                <Text style={styles.dateText}>{deadline.toDateString()}</Text>
+                <Text style={styles.dateText}>{deadline.toLocaleDateString("en-GB")}</Text>
               </View>
             </Pressable>
             {showDate ? (
